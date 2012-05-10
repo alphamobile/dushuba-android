@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>读书吧</title>
+    <link rel="stylesheet" href="jquery.mobile-1.1.0.min.css" type="text/css" media="screen" title="no title">
+	<link rel="stylesheet" href="main.css" type="text/css" media="screen" title="no title">
+	<script type="text/javascript" charset="utf-8" src="cordova-1.6.0.js"></script>
+	<script type="text/javascript" charset="utf-8" src="jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="jquery.mobile-1.1.0.min.js"></script>
+    <script type="text/javascript" src="http://www.douban.com/js/api.js?v=2"></script>
+    <script type="text/javascript" src="http://www.douban.com/js/api-parser.js?v=1"></script>
+<script type="text/javascript">
+$(document).bind('pageinit', function(event, data) {
+    $('#favorites').empty().append('<div style="text-align:center; padding:0px;"><img src="loader.gif" /></div>');
+    DOUBAN.apikey = '088864b1009ad90a19992e1301d08b1e';
+    DOUBAN.getUserCollection({
+        uid:'dushuba',
+        cat:'book',
+        callback:function(result){
+            var feeds = DOUBAN.parseMultiCollection(result);
+            var title = feeds.size;
+            var html = '';
+            html += 'Title:' + title;
+
+            $('#favorites').empty().append(html);
+        }
+    });
+});
+</script>
+  </head>
+  <body>
+  <div data-role="page">
+	<div data-role="header" data-position="fixed">
+		<h1>推荐</h1>
+	</div>
+	<div data-role="content">
+		<div id="favorites">
+		</div>
+	</div>
+	<div data-role="footer" class="nav-glyphish ui-footer ui-bar-a" data-position="fixed" role="contentinfo">
+		<div data-role="navbar" class="nav-glyphish ui-navbar" data-iconpos="top" role="navigation">
+			<ul>
+				<li><a id="home" href="index.html" data-ajax="false" data-role="button" data-icon="home">文章</a></li>
+				<li><a id="activity" href="activities.html" data-ajax="false" data-role="button" data-icon="star">活动</a></li>
+                <li><a id="favorite" href="favorites.html" data-ajax="false" data-role="button" data-icon="star" class="ui-btn-active">推荐</a></li>
+                <li><a id="news" href="news.html" data-ajax="false" data-role="button" data-icon="star">动态</a></li>
+				<li><a id="about" href="about.html" data-ajax="false" data-role="button" data-icon="gear">关于</a></li>
+			</ul>
+		</div>
+	</div>
+	</div>
+  </body>
+</html>

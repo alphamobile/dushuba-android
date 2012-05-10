@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>读书吧</title>
+    <link rel="stylesheet" href="jquery.mobile-1.1.0.min.css" type="text/css" media="screen" title="no title">
+    <link rel="stylesheet" href="main.css" type="text/css" media="screen" title="no title">
+    <script type="text/javascript" charset="utf-8" src="cordova-1.6.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="jquery.mobile-1.1.0.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="jquery.feed-1.0.0.js"></script>
+    <script type="text/javascript">
+    $(document).bind('pageinit', function(event, data) {
+        $('#entries').feed({
+            url : 'http://blog.dushuba.org/feed',
+            count : 10,
+            success: function (data) {
+                var html = '';
+                $('#entries').empty();
+                html += '<ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">';
+                $.each(data.responseData.feed.entries, function(i, entry){
+                    html += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ';
+                    if(i==0) html += "ui-corner-top ";
+                    if(i==data.responseData.feed.entries.length-1) html += "ui-corner-bottom ";
+                    html += 'ui-btn-hover-c ui-btn-up-c"><div class="ui-btn-inner ui-li ui-corner-top"><div class="ui-btn-text"><a href="#page'+ i + '" class="ui-link-inherit">';
+                    html += '<h3 class="ui-li-heading">'+ entry.title +'</h3>';
+                    html += '</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>';
+                    html += '</div>';
+                });
+                html += '</ul>';
+                $('#entries').append(html);
+                $.each(data.responseData.feed.entries, function(i, entry){
+                    var page = '';
+                    page += '<div data-role="page" id="page' + i + '">';
+                    page += '<header data-role="header" data-position="fixed"><a href="#main" data-icon="back" data-rel="back">Back</a><h1></h1></header>';
+                    page += '<div data-role="content"><div class="entry">';
+                    var date = new Date(entry.publishedDate);
+                    page += '<h3>'+ entry.title + '</h3>';
+                    page += '<p>' + entry.author + ',' + date.toLocaleDateString() + '</p>';
+                    page += '<p>' + entry.content + '</p>';
+                    page += '</div></div></div>';
+                    $('#main').after(page);
+                });
+            }
+        });
+    });
+    </script>
+</head>
+<body>
+    <div data-role="page" id="main">
+	  <header data-role="header" data-position="fixed">
+		<h1>最新文章</h1>
+        <a href="index.html" data-ajax="false" data-icon="refresh" class="ui-btn-right">刷新</a>
+	  </header>
+	  <div data-role="content">
+		<div id="entries">
+		</div>
+	  </div>
+	  <footer data-role="footer" class="nav-glyphish ui-footer ui-bar-a" data-position="fixed" role="contentinfo">
+		<div data-role="navbar" class="nav-glyphish ui-navbar" data-iconpos="top" role="navigation">
+			<ul>
+				<li><a id="home" href="index.html" data-role="button" data-icon="home" data-transition="turn" class="ui-btn-active">文章</a></li>
+				<li><a id="activity" href="activities.html" data-ajax="false" data-role="button" data-icon="star" data-transition="turn">活动</a></li>
+                <li><a id="favorite" href="favorites.html" data-ajax="false" data-role="button" data-icon="star" data-transition="turn">推荐</a></li>
+                <li><a id="news" href="news.html" data-ajax="false" data-role="button" data-icon="star" data-transition="turn">动态</a></li>
+				<li><a id="about" href="about.html" data-ajax="false" data-role="button" data-icon="gear" data-transition="turn">关于</a></li>
+			</ul>
+		</div>
+	  </footer>
+	</div>
+</body>
+</html>
