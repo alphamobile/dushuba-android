@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>读书吧</title>
-    <link rel="stylesheet" href="jquery.mobile-1.1.0.min.css" type="text/css" media="screen" title="no title">
-	<link rel="stylesheet" href="main.css" type="text/css" media="screen" title="no title">
-	<script type="text/javascript" charset="utf-8" src="cordova-1.6.0.js"></script>
-	<script type="text/javascript" charset="utf-8" src="jquery-1.7.1.min.js"></script>
-	<script type="text/javascript" charset="utf-8" src="jquery.mobile-1.1.0.min.js"></script>
+    <link rel="stylesheet" href="css/jquery.mobile-1.1.0.min.css" type="text/css" media="screen" title="no title">
+	<link rel="stylesheet" href="css/main.css" type="text/css" media="screen" title="no title">
+	<script type="text/javascript" charset="utf-8" src="js/cordova-1.6.0.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.0.min.js"></script>
 <script type="text/javascript">
 $(document).bind('pageinit', function(event, data) {
     $.getJSON("http://api.douban.com/people/dushuba/miniblog?start-index=1&max-results=10&alt=xd&callback=?", function(result) {
@@ -20,12 +20,14 @@ $(document).bind('pageinit', function(event, data) {
         $('#news').empty();
         html += '<ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">';
         $.each(entries, function(i, entry) {
+            var date = new Date(entry.published['$t']);
             html += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ';
             if(i==0) html += "ui-corner-top ";
             if(i==entries.length-1) html += "ui-corner-bottom ";
-            html += 'ui-btn-hover-c ui-btn-up-c"><div class="ui-btn-inner ui-li ui-corner-top"><div class="ui-btn-text"><a href="#page'+ i + '" class="ui-link-inherit">';
-            html += '<h3 class="ui-li-heading">'+ entry.content['$t'] +'</h3>';
-            html += '</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>';
+            html += 'ui-btn-hover-c ui-btn-up-c"><div class="ui-btn-inner ui-li ui-corner-top">';
+            html += '<p class="ui-li-aside ui-li-desc"><strong>' + date.toLocaleDateString() + '</strong></p>';
+            html += '<p>' + entry.content['$t'] + '</p>';
+            html += '</div></li>';
             html += '</div>';
         });
         html += '</ul>';
