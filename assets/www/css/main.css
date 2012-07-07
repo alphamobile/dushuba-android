@@ -1,0 +1,10 @@
+.entry img { display:inline; }
+
+.nav-glyphish .ui-btn .ui-btn-inner { padding-top: 40px !important; }
+.nav-glyphish .ui-btn .ui-icon { width: 30px!important; height: 30px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
+		
+#home .ui-icon { background:  url(../images/home.png) 50% 50% no-repeat; background-size: 24px 22px; }
+#activity .ui-icon { background:  url(../images/activity.png) 50% 50% no-repeat; background-size: 24px 22px; }
+#favorite .ui-icon { background:  url(../images/books.png) 50% 50% no-repeat; background-size: 24px 22px; }
+#news .ui-icon { background:  url(../images/news.png) 50% 50% no-repeat; background-size: 24px 22px; }
+#about .ui-icon { background:  url(../images/about.png) 50% 50% no-repeat; background-size: 24px 22px; }
