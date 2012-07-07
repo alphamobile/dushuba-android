@@ -12,6 +12,7 @@
 	<script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.0.min.js"></script>
 <script type="text/javascript">
 $(document).bind('pageinit', function(event, data) {
+    $('#news').empty().append('<div style="text-align:center; padding:0px;"><img src="images/loader.gif" /></div>');
     $.getJSON("http://api.douban.com/people/dushuba/miniblog?start-index=1&max-results=10&alt=xd&callback=?", function(result) {
         console.log(result);
         var entries = result.entry;
