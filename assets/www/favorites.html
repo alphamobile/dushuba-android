@@ -10,29 +10,33 @@
 	<script type="text/javascript" charset="utf-8" src="cordova-1.6.0.js"></script>
 	<script type="text/javascript" charset="utf-8" src="jquery-1.7.1.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="jquery.mobile-1.1.0.min.js"></script>
-    <script type="text/javascript" src="http://www.douban.com/js/api.js?v=2"></script>
-    <script type="text/javascript" src="http://www.douban.com/js/api-parser.js?v=1"></script>
 <script type="text/javascript">
 $(document).bind('pageinit', function(event, data) {
-    $('#favorites').empty().append('<div style="text-align:center; padding:0px;"><img src="loader.gif" /></div>');
-    DOUBAN.apikey = '088864b1009ad90a19992e1301d08b1e';
-    DOUBAN.getUserCollection({
-        uid:'dushuba',
-        cat:'book',
-        callback:function(result){
-            var feeds = DOUBAN.parseMultiCollection(result);
-            var title = feeds.size;
-            var html = '';
-            html += 'Title:' + title;
+    $.getJSON("http://api.douban.com/people/dushuba/collection?start-index=1&max-results=10&alt=xd&callback=?", function(result) {
+        console.log(result);
+        var entries = result.entry;
 
-            $('#favorites').empty().append(html);
-        }
+        var html = '';
+        $('#favorites').empty();
+        html += '<ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">';
+        $.each(entries, function(i, entry) {
+            html += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ';
+            if(i==0) html += "ui-corner-top ";
+            if(i==entries.length-1) html += "ui-corner-bottom ";
+            html += 'ui-btn-hover-c ui-btn-up-c"><div class="ui-btn-inner ui-li ui-corner-top"><div class="ui-btn-text"><a href="#page'+ i + '" class="ui-link-inherit">';
+            html += '<h3 class="ui-li-heading">'+ entry['db:subject'].title['$t'] +'</h3>';
+            html += '</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>';
+            html += '</div>';
+        });
+        html += '</ul>';
+        $('#favorites').append(html);
+
     });
 });
 </script>
-  </head>
+</head>
   <body>
-  <div data-role="page">
+  <div data-role="page" id="main">
 	<div data-role="header" data-position="fixed">
 		<h1>推荐</h1>
 	</div>

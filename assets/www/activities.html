@@ -10,18 +10,45 @@
 	<script type="text/javascript" charset="utf-8" src="cordova-1.6.0.js"></script>
 	<script type="text/javascript" charset="utf-8" src="jquery-1.7.1.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="jquery.mobile-1.1.0.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="jquery.feed-1.0.0.js"></script>
 <script type="text/javascript">
 $(document).bind('pageinit', function(event, data) {
-    $.getJSON("http://api.douban.com/people/dushuba/collection?alt=xd&callback=?", function(result){
-        alert(result.title)
+    $.getJSON("http://api.douban.com/people/dushuba/events?start-index=1&max-results=10&alt=xd&callback=?", function(result){
+        var events = result.entry;
+
+        var html = '';
+        $('#activities').empty();
+        html += '<ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">';
+        $.each(events, function(i, event) {
+            html += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ';
+            if(i==0) html += "ui-corner-top ";
+            if(i==events.length-1) html += "ui-corner-bottom ";
+            html += 'ui-btn-hover-c ui-btn-up-c"><div class="ui-btn-inner ui-li ui-corner-top"><div class="ui-btn-text"><a href="#page'+ i + '" class="ui-link-inherit">';
+            html += '<h3 class="ui-li-heading">'+ event.title['$t'] +'</h3>';
+            html += '</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>';
+            html += '</div>';
+        });
+        html += '</ul>';
+        $('#activities').append(html);
+
+        $.each(events, function(i, event) {
+            var page = '';
+            page += '<div data-role="page" id="page' + i + '">';
+            page += '<header data-role="header" data-position="fixed"><a href="#main" data-icon="back" data-rel="back">Back</a><h1></h1></header>';
+            page += '<div data-role="content"><div class="entry">';
+            page += '<h3>'+ event.title['$t'] + '</h3>';
+            page += '<p>' + event.author.name['$t'] + '</p>';
+            page += '<img src="' + event.link[4]['@href'] + '"></>';
+            page += '<p>' + event.content['$t'] + '</p>';
+            page += '</div></div></div>';
+            $('#main').after(page);
+        });
 
     });
 });
 </script>
   </head>
   <body>
-  <div data-role="page">
+  <div data-role="page" id="main">
 	<div data-role="header" data-position="fixed">
 		<h1>最近活动</h1>
 	</div>

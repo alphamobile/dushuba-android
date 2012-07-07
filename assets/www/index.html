@@ -17,6 +17,7 @@
             url : 'http://blog.dushuba.org/feed',
             count : 10,
             success: function (data) {
+                        console.log(data);
                 var html = '';
                 $('#entries').empty();
                 html += '<ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">';
