@@ -17,6 +17,7 @@ var url = 'http://api.douban.com/people/dushuba/events/participate?start-index='
 
 $(document).bind('pageinit', function(event, data) {
     $('#activities').empty().append('<div style="text-align:center; padding:0px;"><img src="images/loader.gif" /></div>');
+    $('#more').hide();
     $.getJSON(url, function(result){
         var events = result.entry;
 
@@ -33,11 +34,11 @@ $(document).bind('pageinit', function(event, data) {
             var where = event['gd:where']['@valueString'];
             var logo = '';
             var links = event.link;
-            for (var i=0; i<links.length; i++)
+            for (var k=0; k<links.length; k++)
             {
-                if (links[i]['@rel']=='image')
+                if (links[k]['@rel']=='image')
                 {
-                    logo = links[i]['@href'];
+                    logo = links[k]['@href'];
                 }
             }
             html += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn  ui-btn-hover-c ui-btn-up-c">';
@@ -50,10 +51,12 @@ $(document).bind('pageinit', function(event, data) {
             html += '<span class="p1">地点: </span>' + where + '<br/>';
             html += '<span class="p1">主办方: </span>' + author + '<br/>';
             html += '</p></div></div>';
-            html += '</a></div></div></li>';
+            html += '</a></div></div>';
+            html += '</li>';
         });
         html += '</ul>';
         $('#activities').append(html);
+        $('#more').show();
     });
 });
 

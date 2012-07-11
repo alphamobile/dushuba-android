@@ -12,6 +12,30 @@
     <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.0.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/jquery.feed-1.0.0.js"></script>
 	<script type="text/javascript" charset="utf-8" src="js/utils.js"></script>
+
+</head>
+<body>
+    <div data-role="page" id="main">
+	  <header data-role="header" data-position="fixed">
+		<h1>最新文章</h1>
+        <a href="index.html" data-ajax="false" data-icon="refresh" class="ui-btn-right">刷新</a>
+	  </header>
+	  <div data-role="content">
+		<div id="entries">
+		</div>
+	  </div>
+	  <footer data-role="footer" class="nav-glyphish ui-footer ui-bar-a" data-position="fixed" role="contentinfo">
+		<div data-role="navbar" class="nav-glyphish ui-navbar" data-iconpos="top" role="navigation">
+			<ul>
+				<li><a id="home" href="index.html" data-role="button" data-icon="home" data-transition="turn" class="ui-btn-active">文章</a></li>
+				<li><a id="activity" href="activities.html" data-ajax="false" data-role="button" data-icon="star" data-transition="turn">活动</a></li>
+                <li><a id="favorite" href="favorites.html" data-ajax="false" data-role="button" data-icon="star" data-transition="turn">推荐</a></li>
+                <li><a id="news" href="news.html" data-ajax="false" data-role="button" data-icon="star" data-transition="turn">动态</a></li>
+				<li><a id="about" href="about.html" data-ajax="false" data-role="button" data-icon="gear" data-transition="turn">关于</a></li>
+			</ul>
+		</div>
+	  </footer>
+	</div>
     <script type="text/javascript">
     $(document).bind('pageinit', function(event, data) {
         $('#entries').feed({
@@ -38,9 +62,9 @@
                     else thumb = 'images/dushuba-thumb.jpg';
 
                     html += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ';
-                    html += 'ui-btn-hover-c ui-btn-up-c"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#page-'+ i + '" class="ui-link-inherit">';
+                    html += 'ui-btn-hover-c ui-btn-up-c"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#page-'+ i + '" class="ui-link-inherit" data-transition="turn">';
 
-                    html += '<h3 class="ui-li-heading" style="padding-left:0px;">'+ title +'</h3><br/>';
+                    html += '<h3 class="ui-li-heading" style="padding-left:0px;text-overflow: ellipsis;">'+ title +'</h3><br/>';
                     html += '<div class="ui-grid-b">';
                     html += '<div class="ui-block-a"><img src="' + thumb + '" class="thumbnail"></div>';
 
@@ -65,14 +89,14 @@
                     var publishedDate = new Date(entry.publishedDate);
 
                     var page = '';
-                    page += '<div data-role="page" id="page-' + i + '">';
-                    page += '<header data-role="header" data-position="fixed"><a href="#main" data-icon="back" data-rel="back">Back</a><h1></h1></header>';
+                    page += '<div data-role="page" id="page-' + i + '" data-title="' + title + '">';
+                    page += '<div data-role="header" data-position="fixed"><a href="#main" data-icon="back" data-rel="back" data-transition="turn">返回</a><h1></h1></div>';
                     page += '<div data-role="content"><div class="entry">';
                     page += '<h3>'+ title + '</h3>';
                     page += '<p class="info"><span class="p1">作者: ' + author + '</span> ';
                     page += '<span class="p1">发表于: ' + publishedDate.format('yyyy-MM-dd hh:mm:ss') + '</span> ';
                     page += '<span class="p1">分类: ' + categories.join(', ') + '</span></p><br/><br/>';
-                    page += '<p class="content">' + entry.content + '</p>';
+                    page += entry.content;
                     page += '</div></div></div>';
                     $('#main').after(page);
                 });
@@ -80,28 +104,5 @@
         });
     });
     </script>
-</head>
-<body>
-    <div data-role="page" id="main">
-	  <header data-role="header" data-position="fixed">
-		<h1>最新文章</h1>
-        <a href="index.html" data-ajax="false" data-icon="refresh" class="ui-btn-right">刷新</a>
-	  </header>
-	  <div data-role="content">
-		<div id="entries">
-		</div>
-	  </div>
-	  <footer data-role="footer" class="nav-glyphish ui-footer ui-bar-a" data-position="fixed" role="contentinfo">
-		<div data-role="navbar" class="nav-glyphish ui-navbar" data-iconpos="top" role="navigation">
-			<ul>
-				<li><a id="home" href="index.html" data-role="button" data-icon="home" data-transition="turn" class="ui-btn-active">文章</a></li>
-				<li><a id="activity" href="activities.html" data-ajax="false" data-role="button" data-icon="star" data-transition="turn">活动</a></li>
-                <li><a id="favorite" href="favorites.html" data-ajax="false" data-role="button" data-icon="star" data-transition="turn">推荐</a></li>
-                <li><a id="news" href="news.html" data-ajax="false" data-role="button" data-icon="star" data-transition="turn">动态</a></li>
-				<li><a id="about" href="about.html" data-ajax="false" data-role="button" data-icon="gear" data-transition="turn">关于</a></li>
-			</ul>
-		</div>
-	  </footer>
-	</div>
 </body>
 </html>

@@ -17,6 +17,7 @@ var url = 'http://api.douban.com/people/dushuba/collection?cat=book&start-index=
 
 $(document).bind('pageinit', function(event, data) {
     $('#favorites').empty().append('<div style="text-align:center; padding:0px;"><img src="images/loader.gif" /></div>');
+    $('#more').hide();
     $.getJSON("http://api.douban.com/people/dushuba/collection?cat=book&start-index=1&max-results=10&alt=xd&callback=?", function(result) {
         var entries = result.entry;
 
@@ -89,7 +90,7 @@ $(document).bind('pageinit', function(event, data) {
         });
         html += '</ul>';
         $('#favorites').append(html);
-
+        $('#more').show();
     });
 });
 
