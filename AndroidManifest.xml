@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.dushuba.android" android:windowSoftInputMode="adjustPan"
       android:versionCode="1"
-      android:versionName="12.06">
+      android:versionName="12.07.10">
       
     <supports-screens
         android:largeScreens="true"
