@@ -11,36 +11,68 @@
     <script type="text/javascript" charset="utf-8" src="js/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.0.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/jquery.feed-1.0.0.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/utils.js"></script>
     <script type="text/javascript">
     $(document).bind('pageinit', function(event, data) {
         $('#entries').feed({
             url : 'http://blog.dushuba.org/feed',
             count : 10,
             success: function (data) {
-                var entries = data.responseData.feed.entries
+                var entries = data.responseData.feed.entries;
+
                 var html = '';
                 $('#entries').empty();
-                html += '<ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">';
+                html += '<ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset">';
                 $.each(entries, function(i, entry){
+                    var title = entry.title;
+                    var author = entry.author;
+                    var categories = entry.categories;
+                    var contentSnippet = entry.contentSnippet;
+                    var content = entry.content;
+                    var publishedDate = new Date(entry.publishedDate);
+                    var link = entry.link;
+                    var reg = /http:\/\/.+?(jpg|png|gif)/gi;
+                    var imgs = content.match(reg);
+                    var thumb = '';
+                    if (imgs && imgs.length>0) thumb = imgs[0];
+                    else thumb = 'images/dushuba-thumb.jpg';
+
                     html += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ';
-                    if(i==0) html += "ui-corner-top ";
-                    if(i==entries.length-1) html += "ui-corner-bottom ";
-                    html += 'ui-btn-hover-c ui-btn-up-c"><div class="ui-btn-inner ui-li ui-corner-top"><div class="ui-btn-text"><a href="#page-'+ i + '" class="ui-link-inherit">';
-                    html += '<h3 class="ui-li-heading">'+ entry.title +'</h3>';
+                    html += 'ui-btn-hover-c ui-btn-up-c"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#page-'+ i + '" class="ui-link-inherit">';
+
+                    html += '<h3 class="ui-li-heading" style="padding-left:0px;">'+ title +'</h3><br/>';
+                    html += '<div class="ui-grid-b">';
+                    html += '<div class="ui-block-a"><img src="' + thumb + '" class="thumbnail"></div>';
+
+                    html += '<div class="ui-block-b" style="width:66.67%;"><p class="info">';
+                    html += '<span class="p1">作者: </span>' + author + '<br/>';
+                    html += '<span class="p1">分类: </span>' + categories.join(', <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;') + '<br/>';
+                    html += '<span class="p1">发表时间: </span>' + publishedDate.format('yyyy-MM-dd hh:mm:ss') + '<br/>';
+
+                    html += '</p></div></div>';
                     html += '</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>';
                     html += '</div>';
+
                 });
                 html += '</ul>';
                 $('#entries').append(html);
                 $.each(entries, function(i, entry){
+                    var title = entry.title;
+                    var author = entry.author;
+                    var categories = entry.categories;
+                    var contentSnippet = entry.contentSnippet;
+                    var content = entry.content;
+                    var publishedDate = new Date(entry.publishedDate);
+
                     var page = '';
                     page += '<div data-role="page" id="page-' + i + '">';
                     page += '<header data-role="header" data-position="fixed"><a href="#main" data-icon="back" data-rel="back">Back</a><h1></h1></header>';
                     page += '<div data-role="content"><div class="entry">';
-                    var date = new Date(entry.publishedDate);
-                    page += '<h3>'+ entry.title + '</h3>';
-                    page += '<p>' + entry.author + ',' + date.toLocaleDateString() + '</p>';
-                    page += '<p>' + entry.content + '</p>';
+                    page += '<h3>'+ title + '</h3>';
+                    page += '<p class="info"><span class="p1">作者: ' + author + '</span> ';
+                    page += '<span class="p1">发表于: ' + publishedDate.format('yyyy-MM-dd hh:mm:ss') + '</span> ';
+                    page += '<span class="p1">分类: ' + categories.join(', ') + '</span></p><br/><br/>';
+                    page += '<p class="content">' + entry.content + '</p>';
                     page += '</div></div></div>';
                     $('#main').after(page);
                 });

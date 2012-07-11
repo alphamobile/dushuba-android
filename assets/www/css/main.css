@@ -1,4 +1,98 @@
-.entry img { display:inline; }
+.ui-li-heading { font-size: 16px; font-weight: bold; display: inline; margin: .6em 0; }
+
+p.content img { display:inline; width: 50%; }
+
+.thumbnail {
+	border:1px solid #ddd;
+	max-height:100px;max-width:80px;padding-top:10px;padding-right:5px;
+	/*-moz-border-radius:5px; -webkit-border-radius:5px; */
+}
+p.info {
+	font: 12px Arial,Helvetica,sans-serif;
+	line-height: 150%;
+	color: #000;
+	float: left;
+}
+
+p.content {
+	font: 14px Arial,Helvetica,sans-serif;
+	line-height: 150%;
+	color: #000;
+	text-indent: 1.2em;
+}
+
+.saying {
+	font: 14px Arial,Helvetica,sans-serif;
+	line-height: 150%;
+	color: #000;
+}
+
+.date {	
+	font: 12px Arial,Helvetica,sans-serif;
+	line-height: 150%;
+	color: #666;
+}
+
+.p1 {
+	font: 12px Arial,Helvetica,sans-serif;
+	line-height: 150%;
+	color: #666;
+}
+
+.bigstar50, .bigstar45, .bigstar40, .bigstar35, .bigstar30, .bigstar25, .bigstar20, .bigstar15, .bigstar10, .bigstar05, .bigstar00 {
+	background: url(images/all_bigstars.gif) no-repeat;
+	height: 14px;
+	display: block;
+	color: #999;
+	overflow: hidden;
+	font-size: 14px;
+	line-height: 100%;
+	width: 75px;
+}
+
+.bigstar50 {
+	background-position: 0 0;
+}
+
+.bigstar45 {
+	background-position: 0 -15px;
+}
+
+.bigstar40 {
+	background-position: 0 -30px;
+}
+
+.bigstar35 {
+	background-position: 0 -45px;
+}
+
+.bigstar30 {
+	background-position: 0 -60px;
+}
+
+.bigstar25 {
+	background-position: 0 -75px;
+}
+
+.bigstar20 {
+	background-position: 0 -90px;
+}
+
+.bigstar15 {
+	background-position: 0 -105px;
+}
+
+.bigstar10 {
+	background-position: 0 -120px;
+}
+
+.bigstar05 {
+	background-position: 0 -135px;
+}
+
+.bigstar00 {
+	background-position: 0 -150px;
+}
 
 .nav-glyphish .ui-btn .ui-btn-inner { padding-top: 40px !important; }
 .nav-glyphish .ui-btn .ui-icon { width: 30px!important; height: 30px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }

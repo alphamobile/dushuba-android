@@ -11,39 +11,98 @@
 	<script type="text/javascript" charset="utf-8" src="js/jquery-1.7.1.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.0.min.js"></script>
 <script type="text/javascript">
+var start = 1;
+var max = 10;
+var url = 'http://api.douban.com/people/dushuba/events/participate?start-index=' + start + '&max-results=' + max + '&alt=xd&callback=?'
+
 $(document).bind('pageinit', function(event, data) {
     $('#activities').empty().append('<div style="text-align:center; padding:0px;"><img src="images/loader.gif" /></div>');
-    $.getJSON("http://api.douban.com/people/dushuba/events/participate?start-index=1&max-results=10&alt=xd&callback=?", function(result){
+    $.getJSON(url, function(result){
         var events = result.entry;
 
         var html = '';
         $('#activities').empty();
-        html += '<ul data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">';
+        html += '<ul id="activitiesContainer" data-role="listview" data-inset="true" class="ui-listview" style="margin:1px;border:none;">';
         $.each(events, function(i, event) {
-            html += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ';
-            if(i==0) html += "ui-corner-top ";
-            if(i==events.length-1) html += "ui-corner-bottom ";
-            html += 'ui-btn-hover-c ui-btn-up-c"><div class="ui-btn-inner ui-li ui-corner-top"><div class="ui-btn-text"><a href="#page'+ i + '" class="ui-link-inherit">';
-            html += '<h3 class="ui-li-heading">'+ event.title['$t'] +'</h3>';
-            html += '</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>';
-            html += '</div>';
+            var title = event.title['$t'];
+            var author = event.author.name['$t'];
+            var content = event.content['$t'];
+            var startTime = event['gd:when']['@startTime'];
+            var endTime = event['gd:when']['@endTime'];
+            var when = startTime.substr(0, 10) + ' ' + startTime.substr(11, 8) + ' - ' + endTime.substr(0, 10) + ' ' + endTime.substr(11, 8);
+            var where = event['gd:where']['@valueString'];
+            var logo = '';
+            var links = event.link;
+            for (var i=0; i<links.length; i++)
+            {
+                if (links[i]['@rel']=='image')
+                {
+                    logo = links[i]['@href'];
+                }
+            }
+            html += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn  ui-btn-hover-c ui-btn-up-c">';
+            html += '<div class=" ui-li"><div class=""><a href="#" class="ui-link-inherit">';
+            html += '<div class="ui-grid-b"><div class="ui-block-a">';
+            html += '<img src="' + logo + '" class="thumbnail" style="max-height:120px;max-width:120px;padding-top:20px;padding-left:10px;padding-right:10px;"></div>';
+            html += '<div class="ui-block-b" style="width:66.667%;"><h4>'+ title +'</h4>';
+            html += '<p class="info">';
+            html += '<span class="p1">时间: </span>' + when + '<br/>';
+            html += '<span class="p1">地点: </span>' + where + '<br/>';
+            html += '<span class="p1">主办方: </span>' + author + '<br/>';
+            html += '</p></div></div>';
+            html += '</a></div></div></li>';
         });
         html += '</ul>';
         $('#activities').append(html);
+    });
+});
 
-        $.each(events, function(i, event) {
-            var page = '';
-            page += '<div data-role="page" id="page' + i + '">';
-            page += '<header data-role="header" data-position="fixed"><a href="#main" data-icon="back" data-rel="back">Back</a><h1></h1></header>';
-            page += '<div data-role="content"><div class="entry">';
-            page += '<h3>'+ event.title['$t'] + '</h3>';
-            page += '<p>' + event.author.name['$t'] + '</p>';
-            page += '<img src="' + event.link[4]['@href'] + '"></>';
-            page += '<p>' + event.content['$t'] + '</p>';
-            page += '</div></div></div>';
-            $('#main').after(page);
+$(document).ready(function() {
+    $('#more').bind('click', function(event, data) {
+        start = start + max;
+        url = 'http://api.douban.com/people/dushuba/events/participate?start-index=' + start + '&max-results=' + max + '&alt=xd&callback=?'
+        $('#loader').show();
+        $('#more').hide();
+        $.getJSON(url, function(result) {
+            var events = result.entry;
+            var html = '';
+
+            $.each(events, function(i, event) {
+                var title = event.title['$t'];
+                var author = event.author.name['$t'];
+                var content = event.content['$t'];
+                var startTime = event['gd:when']['@startTime'];
+                var endTime = event['gd:when']['@endTime'];
+                var when = startTime.substr(0, 10) + ' ' + startTime.substr(11, 8) + ' - ' + endTime.substr(0, 10) + ' ' + endTime.substr(11, 8);
+                var where = event['gd:where']['@valueString'];
+                var logo = '';
+                var links = event.link;
+                for (var i=0; i<links.length; i++)
+                {
+                    if (links[i]['@rel']=='image')
+                    {
+                        logo = links[i]['@href'];
+                    }
+                }
+                html += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn  ui-btn-hover-c ui-btn-up-c">';
+                html += '<div class=" ui-li"><div class=""><a href="#" class="ui-link-inherit">';
+                html += '<div class="ui-grid-b"><div class="ui-block-a">';
+                html += '<img src="' + logo + '" class="" style="max-height:120px;max-width:120px;padding-top:20px;padding-left:10px;"></div>';
+                html += '<div class="ui-block-b" style="width:66.667%;"><h4>'+ title +'</h4>';
+                html += '<p class="info">';
+                html += '<span class="p1">时间: </span>' + when + '<br/>';
+                html += '<span class="p1">地点: </span>' + where + '<br/>';
+                html += '<span class="p1">主办方: </span>' + author + '<br/>';
+                html += '</p></div></div>';
+                html += '</a></div></div></li>';
+
+            });
+
+            $('#activitiesContainer').append(html);
+
+            $('#loader').hide();
+            $('#more').show();
         });
-
     });
 });
 </script>
@@ -56,6 +115,9 @@ $(document).bind('pageinit', function(event, data) {
 	<div data-role="content">
 		<div id="activities">
 		</div>
+
+        <span id="moreContainer"><div id="loader" style="text-align:center; padding:0px;display:none;"><img src="images/loader.gif" /></div>
+        <a id="more" data-role="button" data-theme="b">更多</a></span>
 	</div>
 	<div data-role="footer" class="nav-glyphish ui-footer ui-bar-a" data-position="fixed" role="contentinfo">
 		<div data-role="navbar" class="nav-glyphish ui-navbar" data-iconpos="top" role="navigation">
