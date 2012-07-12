@@ -10,9 +10,10 @@
     <script type="text/javascript" charset="utf-8" src="js/cordova-1.6.0.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.0.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/jquery.mobile.iscrollview.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/jquery.feed-1.0.0.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/iscroll.js"></script>
 	<script type="text/javascript" charset="utf-8" src="js/utils.js"></script>
-
 </head>
 <body>
     <div data-role="page" id="main">
@@ -91,11 +92,11 @@
                     var page = '';
                     page += '<div data-role="page" id="page-' + i + '" data-title="' + title + '">';
                     page += '<div data-role="header" data-position="fixed"><a href="#main" data-icon="back" data-rel="back" data-transition="turn">返回</a><h1></h1></div>';
-                    page += '<div data-role="content"><div class="entry">';
+                    page += '<div data-role="content" data-iscroll="true"><div class="entry">';
                     page += '<h3>'+ title + '</h3>';
-                    page += '<p class="info"><span class="p1">作者: ' + author + '</span> ';
-                    page += '<span class="p1">发表于: ' + publishedDate.format('yyyy-MM-dd hh:mm:ss') + '</span> ';
-                    page += '<span class="p1">分类: ' + categories.join(', ') + '</span></p><br/><br/>';
+                    page += '<p class="info">' + author + ' ';
+                    page += '<span class="p1">发表于: </span>' + publishedDate.format('yyyy-MM-dd hh:mm:ss') + '<br/>';
+                    page += '<span class="p1">分类: </span>' + categories.join(', ') + '</p><br/><br/>';
                     page += entry.content;
                     page += '</div></div></div>';
                     $('#main').after(page);
