@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.dushuba.android" android:windowSoftInputMode="adjustPan"
-      android:versionCode="1"
-      android:versionName="12.07">
+      android:versionCode="3"
+      android:versionName="12.08">
       
     <supports-screens
         android:largeScreens="true"
