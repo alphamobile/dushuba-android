@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>读书吧</title>
-    <link rel="stylesheet" href="css/jquery.mobile-1.1.0.min.css" type="text/css" media="screen" title="no title">
+    <link rel="stylesheet" href="css/jquery.mobile-1.1.1.min.css" type="text/css" media="screen" title="no title">
     <link rel="stylesheet" href="css/main.css" type="text/css" media="screen" title="no title">
 	<script type="text/javascript" charset="utf-8" src="js/iscroll.js"></script>
-    <script type="text/javascript" charset="utf-8" src="js/cordova-1.6.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/cordova-1.6.1.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/jquery-1.7.1.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.0.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.1.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="js/jquery.mobile.iscrollview.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/jquery.feed-1.0.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/share.js"></script>
 	<script type="text/javascript" charset="utf-8" src="js/utils.js"></script>
 </head>
 <body>
     <div data-role="page" id="main">
 	  <header data-role="header" data-position="fixed">
 		<h1>最新文章</h1>
-        <a href="index.html" data-ajax="false" data-icon="refresh" class="ui-btn-right">刷新</a>
 	  </header>
 	  <div data-role="content">
 		<div id="entries">
@@ -62,17 +62,16 @@
                     if (imgs && imgs.length>0) thumb = imgs[0];
                     else thumb = 'images/dushuba-thumb.jpg';
 
-                    html += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ';
-                    html += 'ui-btn-hover-c ui-btn-up-c"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#page-'+ i + '" class="ui-link-inherit" data-transition="turn">';
-
-                    html += '<h3 class="ui-li-heading" style="padding-left:0px;text-overflow: ellipsis;">'+ title +'</h3><br/>';
+                    html += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-btn-hover-c ui-btn-up-c">';
+                    html += '<div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#page-'+ i + '" class="ui-link-inherit" data-transition="turn">';
+                    html += '<h4 style="padding:0px;margin:0;overflow: hidden; text-overflow:ellipsis;">'+ title +'</h4>';
                     html += '<div class="ui-grid-b">';
-                    html += '<div class="ui-block-a"><img src="' + thumb + '" class="thumbnail"></div>';
+                    html += '<div class="ui-block-a"><img src="' + thumb + '" class="thumbnail" style="max-width:65px;max-height:65px"></div>';
 
                     html += '<div class="ui-block-b" style="width:66.67%;"><p class="info">';
                     html += '<span class="p1">作者: </span>' + author + '<br/>';
                     html += '<span class="p1">分类: </span>' + categories.join(', <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;') + '<br/>';
-                    html += '<span class="p1">发表时间: </span>' + publishedDate.format('yyyy-MM-dd hh:mm:ss') + '<br/>';
+                    html += '<span class="p1">发表时间: </span>' + publishedDate.format('yyyy-MM-dd hh:mm') + '<br/>';
 
                     html += '</p></div></div>';
                     html += '</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>';
@@ -83,6 +82,7 @@
                 $('#entries').append(html);
                 $.each(entries, function(i, entry){
                     var title = entry.title;
+                    var link = entry.link;
                     var author = entry.author;
                     var categories = entry.categories;
                     var contentSnippet = entry.contentSnippet;
@@ -91,7 +91,9 @@
 
                     var page = '';
                     page += '<div data-role="page" id="page-' + i + '" data-title="' + title + '">';
-                    page += '<div data-role="header" data-position="fixed"><a href="#main" data-icon="back" data-rel="back" data-transition="turn">返回</a><h1></h1></div>';
+                    page += '<div data-role="header" data-position="fixed"><a href="#main" data-icon="back" data-theme="b" data-rel="back" data-transition="turn">返回</a>';
+                    page += '<h1></h1>';
+                    page += '<a href="javascript:share(\'' + title + '\', \'' + title + ', ' + link + '\');" data-icon="share" data-theme="b" data-transition="turn">分享</a></div>';
                     page += '<div data-role="content" data-iscroll="true"><div class="entry">';
                     page += '<h3>'+ title + '</h3>';
                     page += '<p class="info">' + author + ' ';
@@ -99,11 +101,22 @@
                     page += '<span class="p1">分类: </span>' + categories.join(', ') + '</p><br/><br/>';
                     page += entry.content;
                     page += '</div></div></div>';
+
                     $('#main').after(page);
                 });
             }
         });
     });
+    </script>
+    <script type="text/javascript">
+        function share(s, t) {
+            window.plugins.share.show({
+                subject: s,
+                text: t},
+                function() {}, // Success function
+                function() {alert('Share failed')} // Failure function
+            );
+        }
     </script>
 </body>
 </html>

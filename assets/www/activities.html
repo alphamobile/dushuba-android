@@ -5,11 +5,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>读书吧</title>
-    <link rel="stylesheet" href="css/jquery.mobile-1.1.0.min.css" type="text/css" media="screen" title="no title">
+    <link rel="stylesheet" href="css/jquery.mobile-1.1.1.min.css" type="text/css" media="screen" title="no title">
 	<link rel="stylesheet" href="css/main.css" type="text/css" media="screen" title="no title">
-	<script type="text/javascript" charset="utf-8" src="js/cordova-1.6.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/iscroll.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/cordova-1.6.1.js"></script>
 	<script type="text/javascript" charset="utf-8" src="js/jquery-1.7.1.min.js"></script>
-	<script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.0.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.1.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/jquery.mobile.iscrollview.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/share.js"></script>
 <script type="text/javascript">
 var start = 1;
 var max = 10;
@@ -23,14 +26,17 @@ $(document).bind('pageinit', function(event, data) {
 
         var html = '';
         $('#activities').empty();
-        html += '<ul id="activitiesContainer" data-role="listview" data-inset="true" class="ui-listview" style="margin:1px;border:none;">';
+        html += '<ul id="activitiesContainer" data-role="listview" data-inset="true" class="ui-listview" style="margin:1px;padding:1px;border:none;">';
         $.each(events, function(i, event) {
             var title = event.title['$t'];
             var author = event.author.name['$t'];
             var content = event.content['$t'];
+
             var startTime = event['gd:when']['@startTime'];
             var endTime = event['gd:when']['@endTime'];
-            var when = startTime.substr(0, 10) + ' ' + startTime.substr(11, 8) + ' - ' + endTime.substr(0, 10) + ' ' + endTime.substr(11, 8);
+            var start = startTime.substr(0, 10) + ' ' + startTime.substr(11, 8);
+            var date = new Date(start);
+            var when = startTime.substr(0, 10) + ' ' + startTime.substr(11, 5) + ' - ' + endTime.substr(0, 10) + ' ' + endTime.substr(11, 5);
             var where = event['gd:where']['@valueString'];
             var logo = '';
             var links = event.link;
@@ -41,22 +47,73 @@ $(document).bind('pageinit', function(event, data) {
                     logo = links[k]['@href'];
                 }
             }
-            html += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn  ui-btn-hover-c ui-btn-up-c">';
-            html += '<div class=" ui-li"><div class=""><a href="#" class="ui-link-inherit">';
+            html += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-btn-hover-c ui-btn-up-c">';
+            html += '<div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#page-'+ i + '" class="ui-link-inherit" data-transition="turn">';
             html += '<div class="ui-grid-b"><div class="ui-block-a">';
-            html += '<img src="' + logo + '" class="thumbnail" style="max-height:120px;max-width:120px;padding-top:20px;padding-left:10px;padding-right:10px;"></div>';
-            html += '<div class="ui-block-b" style="width:66.667%;"><h4>'+ title +'</h4>';
+            html += '<img src="' + logo + '" class="thumbnail" style="max-height:100px;max-width:100px;padding-top:0px;padding-left:10px;padding-right:5px;"></div>';
+            html += '<div class="ui-block-b" style="width:66.667%;">';
+            html += '<h4 style="padding:0px;margin:0;">'+ title +'</h4>';
             html += '<p class="info">';
             html += '<span class="p1">时间: </span>' + when + '<br/>';
             html += '<span class="p1">地点: </span>' + where + '<br/>';
             html += '<span class="p1">主办方: </span>' + author + '<br/>';
             html += '</p></div></div>';
-            html += '</a></div></div>';
+            html += '</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div>';
+            if (date > new Date())
+            {
+                html += '<img src="images/new.png" alt="New" class="new">';
+            }
             html += '</li>';
         });
         html += '</ul>';
         $('#activities').append(html);
+
         $('#more').show();
+
+        $.each(events, function(i, event) {
+            console.log(event);
+            var title = event.title['$t'];
+            var author = event.author.name['$t'];
+            var content = event.content['$t'];
+            var startTime = event['gd:when']['@startTime'];
+            var endTime = event['gd:when']['@endTime'];
+            var when = startTime.substr(0, 10) + ' ' + startTime.substr(11, 5) + ' - ' + endTime.substr(0, 10) + ' ' + endTime.substr(11, 5);
+            var where = event['gd:where']['@valueString'];
+            var link = '';
+            var logo = '';
+            var links = event.link;
+            for (var k=0; k<links.length; k++)
+            {
+                if (links[k]['@rel']=='image')
+                {
+                    logo = links[k]['@href'];
+                }
+                if (links[k]['@rel']=='alternate')
+                {
+                    link = links[k]['@href'];
+                }
+            }
+            var page = '';
+            page += '<div data-role="page" id="page-' + i + '" data-title="' + title + '">';
+            page += '<div data-role="header" data-position="fixed"><a href="#main" data-icon="back" data-theme="b" data-rel="back" data-transition="turn">返回</a><h1></h1>';
+            page += '<a href="javascript:share(\'' + title + '\', \'' + title + ', ' + link + '\');" data-icon="share" data-theme="b" data-transition="turn">分享</a></div>';
+            page += '<div data-role="content" data-iscroll="true"><div class="">';
+            page += '<div class="ui-grid-b"><div class="ui-block-a">';
+            page += '<img src="' + logo + '" class="thumbnail" style="max-height:120px;max-width:120px;padding-top:10px;padding-left:5px;padding-right:5px;"></div>';
+            page += '<div class="ui-block-b" style="width:66.667%;">';
+
+            page += '<h4>'+ title +'</h4>';
+            page += '<p class="info">';
+            page += '<span class="p1">时间: </span>' + when + '<br/>';
+            page += '<span class="p1">地点: </span>' + where + '<br/>';
+            page += '<span class="p1">主办方: </span>' + author + '<br/>';
+            page += '</p></div></div></div>';
+            page += '<div style="margin:10px;">';
+            page += content.replace(/[\n\r\t]/g, "<br/>");
+            page += '</div></div></div></div>';
+
+            $('#main').after(page);
+        });
     });
 });
 
@@ -134,5 +191,15 @@ $(document).ready(function() {
 		</div>
 	</div>
 	</div>
+    <script type="text/javascript">
+        function share(s, t) {
+            window.plugins.share.show({
+                subject: s,
+                text: t},
+                function() {}, // Success function
+                function() {alert('Share failed')} // Failure function
+            );
+        }
+    </script>
   </body>
 </html>
